@@ -164,16 +164,16 @@
         
         document.getElementById("item-rarity").className = "frame-" + rar;
         
-        var affixCount = 2;
+        var affixCount = chance.pickone([2, 3]);
         var legCount = 0;
         if(rar == "Rare")
         {
-            affixCount = 4;
+            affixCount = chance.pickone([4, 5]);
         }
         else if(rar == "Legendary")
         {
             affixCount = 4;
-            legCount = 1;
+            legCount = chance.pickone([1, 2]);
         }
         
         var affixes = "";
@@ -222,7 +222,7 @@
         });
         
         legaffixlist.forEach(element => {
-          affixes += "<li class='aff-leg'>" + solve(element) + "</li>";
+          affixes += "<li class='aff-leg'>" + solve(element, rar) + "</li>";
         });
         
         document.getElementById("affixes").innerHTML = affixes;
