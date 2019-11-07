@@ -1,0 +1,467 @@
+<html>
+<head>
+<title>Diablo 4</title>
+<meta http-equiv="Content-Type" content="text/html; charset=utf-8">
+<script type="text/javascript" src="chance.min.js"></script>
+<script type="text/javascript">
+    var itemslot = [
+        "Amulet",
+        "Gloves",
+        "Weapon",
+        "Helmet",
+        "Chest Armor",
+        "Pants",
+        "Boots",
+        "Ring",
+        "Shield"
+    ];
+    var amuletaffix = [
+        "+[1-5-10][50-40-30] All Resistances",
+        "Cannot be frozen",
+        "+[25-15-5][50-25-10]% Reduced Cooldown Time {timecond}",
+        "+[1-1-1][25-12-5]% Reduced Cooldown Time",
+        "+[5-5-5][25-20-15]% Health",
+        "+[5-5-5][25-20-15]% Damage",
+        "+[5-5-5][25-20-15]% {dmgtype} Damage",
+        "+[1-1-2][10-8-5]% Critical Strike Chance",
+        "+[10-10-10][100-75-50]% Critical Strike Damage",
+    ];
+    var ringaffix = amuletaffix;
+    var gloveaffix = [
+        "Increases attack speed by [1-3-3][10-8-5]%",
+        "Increases attack speed by [8-5-5][20-15-10]% {timecond}",
+        "+[5-5-5][25-20-15]% Damage",
+        "+[5-5-5][25-20-15]% {dmgtype} Damage",
+        "+[50-50-50][250-200-150]% Damage {timecond|monstercond}",
+        "+[50-50-50][250-200-150]% {dmgtype} Damage {timecond|monstercond}",
+        "+[1-1-1][25-20-15]% Ranged Damage Reduction",
+        "+[1-1-1][25-20-15]% Melee Damage Reduction",
+        "+[5-3-2][25-12-8]% Damage Reduction",
+    ];
+    var chestaffix = [
+        "+[5-5-5][25-20-15]% Health",
+        "+[1-1-1][25-20-15]% Ranged Damage Reduction",
+        "+[1-1-1][25-20-15]% Melee Damage Reduction",
+        "+[5-3-2][25-12-8]% Damage Reduction",
+    ];
+    var pantsaffix = [
+        "+[5-5-5][25-20-15]% Health",
+        "+[1-1-1][25-20-15]% Ranged Damage Reduction",
+        "+[1-1-1][25-20-15]% Melee Damage Reduction",
+        "+[5-3-2][25-12-8]% Damage Reduction",
+    ];
+    var helmetsaffix = [
+        "+[5-5-5][25-20-15]% Health",
+        "+[1-1-1][25-20-15]% Ranged Damage Reduction",
+        "+[1-1-1][25-20-15]% Melee Damage Reduction",
+        "+[5-3-2][25-12-8]% Damage Reduction",
+    ];
+    var bootsaffix = [
+        "+[1-1-1][25-20-15]% Movement Speed",
+        "+[1-5-10][50-40-30]% Movement Speed {timecond}",
+    ];
+    var weaponaffix = [
+        "Increases attack speed by [1-3-3][10-8-5]%",
+        "Increases attack speed by [8-5-5][20-15-10]% {timecond}",
+        "+[5-5-5][25-20-15]% Damage",
+        "+[5-5-5][25-20-15]% {dmgtype} Damage",
+        "+[50-50-50][250-200-150]% Damage {timecond|monstercond}",
+        "+[50-50-50][250-200-150]% {dmgtype} Damage {timecond|monstercond}",
+    ];
+    var shieldaffix = [
+        "+[1-1-1][25-20-15]% Health",
+        "+[1-1-1][25-20-15]% Ranged Damage Reduction",
+        "+[1-1-1][25-20-15]% Melee Damage Reduction",
+        "+[1-5-10][50-40-30] All Resistances",
+        "Cannot be frozen",
+        "+[1-1-1][25-20-15]% Increased block chance",
+    ];
+    var affix = [
+        "+[5-25-50][200-100-75]% Health Regeneration {timecond}",
+        "+[5-25-50][200-100-75]% Ressource Regeneration {timecond}",
+        "+[5-15-20][100-50-35]% Health Regeneration",
+        "+[5-15-20][100-50-35]% Ressource Regeneration",
+        "+[30-35-40][75-60-50] {restype} Resistance {timecond}",
+        "+[1-5-10][25-20-15] {restype} Resistance",
+        "+[1-5-8][50-25-15]% experience gained",
+        "Reduces the duration of control impairing effects by [5-5-5][20-15-10]%",
+        "+[1-10-25][200-100-75] Health",
+        "[1-1-1][3-2-1] Sockets",
+    ];
+    var monstercond = [
+        "against demons",
+        "against undead",
+        "against stunned targets",
+        "against slowed targets",
+        "against elite monsters",
+        "against boss monsters",
+        "against burning monsters",
+        "against frozen monsters",
+        "against poisoned monsters",
+        "against monsters at full health",
+        ];
+    var timecond = [
+        "[1-1-1][4-3-2] seconds after using a skill",
+        "[1-1-1][4-3-2] seconds after shapeshifting",
+        "[1-1-1][4-3-2] seconds after switching arsenal",
+        "[1-1-1][4-3-2] seconds after being stunned",
+        "[1-1-1][4-3-2] seconds after dashing",
+        "[1-1-1][4-3-2] seconds after a critical strike",
+        "[1-1-1][4-3-2] seconds after being hit by a ranged attack",
+        "[1-1-1][4-3-2] seconds after being hit by a melee attack",
+        "[1-1-1][4-3-2] seconds after killing a monster",
+        "[1-1-1][4-3-2] seconds after hitting a monster",
+        "[1-1-1][4-3-2] seconds after killing an elite monster",
+        "[1-1-1][4-3-2] seconds after using a potion",
+        "when full health",
+        "when your ressource is full",
+        "when under [5-10-15][30-25-20]% of your max life",
+        "when slowed",
+        "[1-1-1][4-3-2] seconds after going through a town portal",
+    ];
+    var dmgtype = [
+        "Melee",
+        "Projectile",
+        "Fire",
+        "Cold",
+        "Poison",
+        "Lightning",
+        "Arcane"
+    ];
+    var restype = [
+        "Fire",
+        "Cold",
+        "Poison",
+        "Lightning"
+    ];
+    
+    var rarety = [
+        "Magic",
+        "Rare",
+        "Legendary"
+    ];
+    
+    function generateItem()
+    {
+        var rar = chance.pickone(rarety);
+        var slot = chance.pickone(itemslot);
+
+        document.getElementById("rarety").innerHTML = rar;
+        document.getElementById("slot").innerHTML = slot;
+        
+        document.getElementById("item-rarity").className = "frame-" + rar;
+        
+        var affixCount = 2;
+        var legCount = 0;
+        if(rar == "Rare")
+        {
+            affixCount = 4;
+        }
+        else if(rar == "Legendary")
+        {
+            affixCount = 4;
+            legCount = 1;
+        }
+        
+        var affixes = "";
+        
+        var affixtochoose = affix;
+        if(slot == "Amulet")
+        {
+            affixtochoose = affix.concat(amuletaffix);
+        }
+        else if(slot == "Ring")
+        {
+            affixtochoose = affix.concat(ringaffix);
+        }
+        else if(slot == "Gloves")
+        {
+            affixtochoose = affix.concat(gloveaffix);
+        }
+        else if(slot == "Chest")
+        {
+            affixtochoose = affix.concat(chestaffix);
+        }
+        else if(slot == "Pants")
+        {
+            affixtochoose = affix.concat(pantsaffix);
+        }
+        else if(slot == "Helmet")
+        {
+            affixtochoose = affix.concat(helmetsaffix);
+        }
+        else if(slot == "Boots")
+        {
+            affixtochoose = affix.concat(bootsaffix);
+        }
+        else if(slot == "Weapon")
+        {
+            affixtochoose = affix.concat(weaponaffix);
+        }
+        
+        var affixlist = chance.pickset(affixtochoose, affixCount);
+        
+        var legaffixtochoose = amuletaffix.concat(gloveaffix).concat(chestaffix).concat(bootsaffix).concat(weaponaffix);
+        var legaffixlist = chance.pickset(legaffixtochoose, legCount);
+        
+        affixlist.forEach(element => {
+          affixes += "<li>" + solve(element, rar) + "</li>";
+        });
+        
+        legaffixlist.forEach(element => {
+          affixes += "<li class='aff-leg'>" + solve(element) + "</li>";
+        });
+        
+        document.getElementById("affixes").innerHTML = affixes;
+    }
+    
+    function solve(string, rar)
+    {
+        var results = string.match(/\[.+?\]\[.+?\]/g);
+        if(results != null)
+        {
+            var min = results[0].match(/\[.+?\]/g)[0].replace("[", "").replace("]", "");
+            var max = results[0].match(/\[.+?\]/g)[1].replace("[", "").replace("]", "");
+
+            var rarindex = 0;
+            if(rar == "Rare")
+            {
+                rarindex = 1;
+            }
+            else if(rar == "Legendary")
+            {
+                rarindex = 2;
+            }
+
+            min = parseInt(min.split("-")[rarindex]);
+            max = parseInt(max.split("-")[rarindex]);
+
+            string = string.replace(results[0], "<strong>" + randIntRange(min, max) + "</strong>");
+        }
+
+        var results = string.match(/\{.+?\}/g);
+        if(results != null)
+        {
+            results.forEach(element => {
+                if(element == "{timecond}")
+                {
+                    var t = chance.pickone(timecond);
+                    var result = solve(t, rar);
+                    string = string.replace(element, result);
+                }
+                else if(element == "{timecond|monstercond}")
+                {
+                    var t = chance.pickone(timecond.concat(monstercond));
+                    var result = solve(t, rar);
+                    string = string.replace(element, result);
+                }
+                else if(element == "{dmgtype}")
+                {
+                    var t = chance.pickone(dmgtype);
+                    var result = solve(t, rar);
+                    string = string.replace(element, result);
+                }
+                else if(element == "{restype}")
+                {
+                    var t = chance.pickone(restype);
+                    var result = solve(t, rar);
+                    string = string.replace(element, result);
+                }
+            });
+        }
+        
+        
+        return string;
+    }
+    
+    function randIntRange(min, max)
+    {
+        return Math.floor(Math.random() * (max - min + 1)) + min;
+    }
+    
+    document.addEventListener("DOMContentLoaded", function(event) { 
+        generateItem();
+    });
+    
+</script>
+<style type="text/css">
+    @font-face
+    {
+        font-family: 'Diablo Heavy';
+        font-style: normal;
+        font-weight: normal;
+        src: local('Diablo Heavy'), url('diablo.woff') format('woff');
+    }
+    body
+    {
+        background-image: url("https://d29z11wvk6phpt.cloudfront.net/assets/images/gameplay-loop_ultra.d01adcd21f4c6ff35233f2ca5da6303f.jpg");
+        background-repeat: no-repeat;
+        background-color: black;
+        background-position: center;
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        align-items: center;
+    }
+    .item-container
+    {
+        background-color: black;
+        width: 337px;
+        display: flex;
+        flex-direction: column;
+    }
+    .item-container .item-header
+    {
+        width: 337px;
+        height: 106px;
+        background-image: url(header.png);
+        background-repeat: no-repeat;
+    }
+    .item-container .item-header .item-name
+    {
+        float: left;
+        margin-left: 20px;
+        margin-top: 20px;
+        width: 200px;
+        color: antiquewhite;
+        font-size: 18pt;
+        font-family:'Diablo Heavy';
+    }
+    .item-container .item-header #item-rarity
+    {
+        width: 51px;
+        height: 71px;
+        background-repeat: no-repeat;
+        float: right;
+        position: relative;
+        margin-right: 14px;
+        margin-top: 11px;
+    }
+    .frame-normal
+    {
+        background-image: url(normal.png);
+    }
+    .frame-magic
+    {
+        background-image: url(magic.png);
+    }
+    .frame-rare
+    {
+        background-image: url(rare.png);
+    }
+    .frame-legendary
+    {
+        background-image: url(legendary.png);
+    }
+    .item-container .item-content-wrapper
+    {
+        display: flex;
+        flex-direction: row;
+    }
+    .item-container .item-border-left
+    {
+        flex: 0 0 15px;
+        background-image: url(leftborder.gif);
+        background-position: -1px;
+        background-repeat: repeat-y;
+    }
+    .item-container .item-border-right
+    {
+        flex: 0 0 14px;
+        background-image: url(rightborder.gif);
+        background-position: -1px;
+        background-repeat: repeat-y;
+    }
+    .item-container .item-content
+    {
+        flex: auto;
+        background-color: #30231B;
+        margin: 0px;
+        color: antiquewhite;
+        font-family: sans-serif;
+    }
+    .item-container .item-content ul
+    {
+        padding: 0px;
+    }
+    .item-container .item-content li
+    {
+        list-style: none;
+        background: url(normbullet.png) no-repeat left top;
+        line-height: 22px;
+        padding-left: 24px;
+        margin-bottom: 4px;
+    }
+    .item-container .item-content .aff-leg
+    {
+        background: url(legbullet.png) no-repeat left top;
+        color: orangered;
+    }
+    .item-container .item-footer
+    {
+        background-image: url(footer.gif);
+        background-repeat: no-repeat;
+        background-position: -1px 0px;
+        width: 337px;
+        height: 81px;
+    }
+    .acknowledgments
+    {
+        display: flex;
+        flex-direction: row;
+        justify-content: center;
+    }
+    .acknowledgments .youtube
+    {
+        width: 100px;
+        margin: 10px;
+    }
+    .acknowledgments .youtube a
+    {
+        display: flex;
+        flex-direction: column;
+        justify-content: center;
+        text-align: center;
+        color: antiquewhite;
+        text-decoration: none;
+        font-family: sans-serif;
+    }
+</style>
+</head>
+<body>
+    <div class="item-container">
+        <div class="item-header">
+            <div class="item-name"><span id="rarety">Legendary</span><br/><span id="slot">Amulet</span></div>
+            <div id="item-rarity"></div>
+        </div>
+        <div class="item-content-wrapper">
+        <div class="item-border-left"></div>
+        <div class="item-content">
+            <ul id="affixes">
+            <li>This is a very long affix on two line hopefully</li>
+            <li>Test</li>
+            <li>Test</li>
+            <li>Test</li>
+            <li class="aff-leg">Test</li>
+            </ul>
+        </div>
+        <div class="item-border-right"></div>
+        </div>
+        <div class="item-footer"></div>
+    </div>
+    <div class="acknowledgments">
+        <div class="youtube">
+            <a href="https://www.youtube.com/watch?v=2qrxNCH-vbk" target="_blank">
+                <div><img src="play-button.png"/></div>
+                <div>Noxious</div>
+            </a>
+        </div>
+        <div class="youtube">
+            <a href="https://www.youtube.com/watch?v=n_TLvhNV8ZI" target="_blank">
+                <div><img src="play-button.png"/></div>
+                <div>MrLLamaSC</div>
+            </a>
+        </div>
+    </div>
+</body>
+</html>
