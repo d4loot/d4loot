@@ -27,9 +27,11 @@
         "+[10-10-10][100-75-50]% Critical Strike Damage",
         "+[1-1-1][3-2-1] to all Ranks",
         "+[1-1-1][3-2-1] to all {class} Ranks",
+        "+[5-8-10][50-40-25]% Magic Find",
+    ];
+    var amuletcasteraffix = [
         "+[5-5-8][25-20-15]% Faster Cast Rate",
         "+[5-10-15][50-40-30]% Faster Cast Rate {timecond}",
-        "+[5-8-10][50-40-25]% Magic Find",
     ];
     var ringaffix = amuletaffix;
     var gloveaffix = [
@@ -39,47 +41,39 @@
         "+[5-5-5][25-20-15]% {dmgtype} Damage",
         "+[50-50-50][250-200-150]% Damage {timecond|monstercond}",
         "+[50-50-50][250-200-150]% {dmgtype} Damage {timecond|monstercond}",
-        "+[3-3-5][25-20-15]% Ranged Damage Reduction",
-        "+[3-3-5][25-20-15]% Melee Damage Reduction",
-        "+[5-3-2][25-12-8]% Damage Reduction",
     ];
-    var chestaffix = [
+    var armoraffix = [
         "+[5-5-5][25-20-15]% Health",
         "+[3-3-5][25-20-15]% Ranged Damage Reduction",
         "+[3-3-5][25-20-15]% Melee Damage Reduction",
         "+[5-3-2][25-12-8]% Damage Reduction",
     ];
-    var pantsaffix = [
-        "+[5-5-5][25-20-15]% Health",
-        "+[3-3-5][25-20-15]% Ranged Damage Reduction",
-        "+[3-3-5][25-20-15]% Melee Damage Reduction",
-        "+[5-3-2][25-12-8]% Damage Reduction",
-    ];
-    var helmetsaffix = [
-        "+[5-5-5][25-20-15]% Health",
-        "+[3-3-5][25-20-15]% Ranged Damage Reduction",
-        "+[3-3-5][25-20-15]% Melee Damage Reduction",
-        "+[5-3-2][25-12-8]% Damage Reduction",
-    ];
+    var chestaffix = [];
+    var pantsaffix = [];
+    var helmetsaffix = [];
     var bootsaffix = [
         "+[5-5-10][25-20-15]% Movement Speed",
         "+[1-5-10][50-40-30]% Movement Speed {timecond}",
     ];
     var weaponaffix = [
-        "Increases attack speed by [1-3-3][10-8-5]%",
-        "Increases attack speed by [8-5-5][20-15-10]% {timecond}",
         "+[5-5-5][25-20-15]% Damage",
         "+[5-5-5][25-20-15]% {dmgtype} Damage",
         "+[50-50-50][250-200-150]% Damage {timecond|monstercond}",
         "+[50-50-50][250-200-150]% {dmgtype} Damage {timecond|monstercond}",
+    ];
+    var weaponaffixnoncaster = [
+        "Increases attack speed by [1-3-3][10-8-5]%",
+        "Increases attack speed by [8-5-5][20-15-10]% {timecond}",
         "+[5-10-20][100-80-50]% Physical Damage converted to {restype}",
     ];
+    var weaponaffixcaster = [
+        "+[5-5-8][25-20-15]% Faster Cast Rate",
+        "+[5-10-15][50-40-30]% Faster Cast Rate {timecond}",
+    ];
     var shieldaffix = [
-        "+[1-1-1][25-20-15]% Health",
-        "+[1-1-1][25-20-15]% Ranged Damage Reduction",
-        "+[1-1-1][25-20-15]% Melee Damage Reduction",
         "+[1-5-10][50-40-30] All Resistances",
         "Cannot be frozen",
+        "+[5-5-10][50-40-30]% Damage after blocking an attack",
         "+[1-1-1][25-20-15]% Increased block chance",
     ];
     var affix = [
@@ -101,6 +95,7 @@
         "Stunning enemies freeze them",
         "Your dash is twice as long",
         "Your dash cooldown is reduced by half",
+        "Town portal casting time reduced by half",
         "Potion cooldown reduced by [1-1-1][3-2-3] seconds",
     ];
     var classes = [
@@ -120,12 +115,10 @@
         "against burning monsters",
         "against frozen monsters",
         "against poisoned monsters",
-        "against monsters at full health",
+        "against monsters below [5-10-15][30-25-20]% health",
         ];
     var timecond = [
         "[1-1-1][4-3-2] seconds after using a skill",
-        "[1-1-1][4-3-2] seconds after shapeshifting",
-        "[1-1-1][4-3-2] seconds after switching arsenal",
         "[2-2-2][5-4-3]  seconds after exiting a stun effect",
         "[2-2-2][5-4-3] seconds after dashing",
         "[2-2-2][5-4-3] seconds after a critical strike",
@@ -134,8 +127,17 @@
         "[5-5-5][15-12-10] seconds after using a potion",
         "when full health",
         "when your ressource is full",
-        "when under [5-10-15][30-25-20]% of your max life",
+        "when under [5-10-15][30-25-20]% of your max health",
         "when slowed",
+        "when you are unstoppable"
+    ];
+    var timecondbarb = [
+        "[1-1-1][4-3-2] seconds after switching arsenal",
+        "[1-1-1][4-3-2] seconds after using a war cry",
+    ];
+    var timeconddruid = [
+        "[1-1-1][4-3-2] seconds after shapeshifting",
+        "[3-3-3][8-6-5] seconds after one of your pet dies",
     ];
     var dmgtype = [
         "Melee",
@@ -163,22 +165,22 @@
     {
         var rar = chance.pickone(rarety);
         var slot = chance.pickone(itemslot);
-
+        var cla = chance.pickone(classes);
         document.getElementById("rarety").innerHTML = rar;
         document.getElementById("slot").innerHTML = slot;
         
         document.getElementById("item-rarity").className = "frame-" + rar;
         
-        var affixCount = chance.pickone([2, 3]);
+        var affixCount = chance.pickone([1, 2, 2, 2, 3]);
         var legCount = 0;
         if(rar == "Rare")
         {
-            affixCount = chance.pickone([4, 5]);
+            affixCount = chance.pickone([4, 4, 5, 5, 6]);
         }
         else if(rar == "Legendary")
         {
             affixCount = 4;
-            legCount = chance.pickone([1, 2]);
+            legCount = chance.pickone([1, 2, 2, 2, 3]);
         }
         
         var affixes = "";
@@ -186,54 +188,97 @@
         var affixtochoose = affix;
         if(slot == "Amulet")
         {
-            affixtochoose = affix.concat(amuletaffix);
+            affixtochoose = affixtochoose.concat(amuletaffix);
+            if(cla == "Sorceress" || cla == "Paladin")
+            {
+                affixtochoose = affixtochoose.concat(amuletcasteraffix);
+            }
         }
         else if(slot == "Ring")
         {
-            affixtochoose = affix.concat(ringaffix);
+            affixtochoose = affixtochoose.concat(ringaffix);
         }
         else if(slot == "Gloves")
         {
-            affixtochoose = affix.concat(gloveaffix);
+            affixtochoose = affixtochoose.concat(gloveaffix);
+            affixtochoose = affixtochoose.concat(armoraffix);
         }
-        else if(slot == "Chest")
+        else if(slot == "Chest" || slot == "Pants" || slot == "Helmet")
         {
-            affixtochoose = affix.concat(chestaffix);
-        }
-        else if(slot == "Pants")
-        {
-            affixtochoose = affix.concat(pantsaffix);
-        }
-        else if(slot == "Helmet")
-        {
-            affixtochoose = affix.concat(helmetsaffix);
+            affixtochoose = affixtochoose.concat(armoraffix);
         }
         else if(slot == "Boots")
         {
-            affixtochoose = affix.concat(bootsaffix);
+            affixtochoose = affixtochoose.concat(bootsaffix);
+            affixtochoose = affixtochoose.concat(armoraffix);
+        }
+        else if(slot == "Shield")
+        {
+            affixtochoose = affixtochoose.concat(shieldaffix);
+            affixtochoose = affixtochoose.concat(armoraffix);
         }
         else if(slot == "Weapon")
         {
-            affixtochoose = affix.concat(weaponaffix);
+            affixtochoose = affixtochoose.concat(weaponaffix);
+            
+            if(cla == "Sorceress" || cla == "Paladin")
+            {
+                affixtochoose = affixtochoose.concat(weaponaffixcaster);
+            }
+            
+            if(cla != "Sorceress")
+            {
+                affixtochoose = affixtochoose.concat(weaponaffixnoncaster);
+            }
         }
         
         var affixlist = chance.pickset(affixtochoose, affixCount);
         
-        var legaffixtochoose = amuletaffix.concat(gloveaffix).concat(chestaffix).concat(bootsaffix).concat(weaponaffix).concat(legendaryaffix);
+        var legaffixtochoose = []; 
+        if(slot != "Amulet" && slot != "Ring")
+        {
+            legaffixtochoose = legaffixtochoose.concat(amuletaffix);
+            
+            if(cla == "Sorceress" || cla == "Paladin")
+            {
+                legaffixtochoose = legaffixtochoose.concat(amuletcasteraffix);
+            }
+        }
+        if(slot != "Weapon")
+        {
+            legaffixtochoose = legaffixtochoose.concat(weaponaffix);
+        }
+        if(slot != "Boots")
+        {
+            legaffixtochoose = legaffixtochoose.concat(bootsaffix);
+        }
+        if(slot != "Gloves")
+        {
+            legaffixtochoose = legaffixtochoose.concat(gloveaffix);
+        }
+        if(slot != "Shield")
+        {
+            legaffixtochoose = legaffixtochoose.concat(shieldaffix);
+        }
+        if(slot == "Amulet" || slot == "Ring" || slot == "Weapon")
+        {
+            legaffixtochoose = legaffixtochoose.concat(armoraffix);
+        }
+        amuletaffix.concat(gloveaffix).concat(chestaffix).concat(bootsaffix).concat(weaponaffix).concat(legendaryaffix);
         var legaffixlist = chance.pickset(legaffixtochoose, legCount);
         
         affixlist.forEach(element => {
-          affixes += "<li>" + solve(element, rar) + "</li>";
+          affixes += "<li>" + solve(element, rar, cla) + "</li>";
         });
         
         legaffixlist.forEach(element => {
-          affixes += "<li class='aff-leg'>" + solve(element, rar) + "</li>";
+          affixes += "<li class='aff-leg'>" + solve(element, rar, cla) + "</li>";
         });
         
         document.getElementById("affixes").innerHTML = affixes;
     }
     
-    function solve(string, rar)
+    function solve(string, rar, cla)
     {
         var results = string.match(/\[.+?\]\[.+?\]/g);
         if(results != null)
@@ -263,7 +308,18 @@
             results.forEach(element => {
                 if(element == "{timecond}")
                 {
-                    var t = chance.pickone(timecond);
+                    var timecondtolist = timecond;
+                    
+                    if(cla == "Barbarian")
+                    {
+                        timecondtolist = timecondtolist.concat(timecondbarb);
+                    }
+                    else if(cla == "Druid")
+                    {
+                        timecondtolist = timecondtolist.concat(timeconddruid);
+                    }
+                    
+                    var t = chance.pickone(timecondtolist);
                     var result = solve(t, rar);
                     string = string.replace(element, result);
                 }
@@ -287,9 +343,7 @@
                 }
                 else if(element == "{class}")
                 {
-                    var t = chance.pickone(classes);
-                    var result = solve(t, rar);
-                    string = string.replace(element, result);
+                    string = string.replace(element, cla);
                 }
             });
         }
@@ -456,18 +510,13 @@
 <body>
     <div class="item-container">
         <div class="item-header">
-            <div class="item-name"><span id="rarety">Legendary</span><br/><span id="slot">Amulet</span></div>
+            <div class="item-name"><span id="rarety">Diablo 4</span><br/><span id="slot">Item generator</span></div>
             <div id="item-rarity"></div>
         </div>
         <div class="item-content-wrapper">
         <div class="item-border-left"></div>
         <div class="item-content">
             <ul id="affixes">
-            <li>This is a very long affix on two line hopefully</li>
-            <li>Test</li>
-            <li>Test</li>
-            <li>Test</li>
-            <li class="aff-leg">Test</li>
             </ul>
         </div>
         <div class="item-border-right"></div>
